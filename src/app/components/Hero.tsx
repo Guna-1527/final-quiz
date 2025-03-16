@@ -2,17 +2,13 @@
 
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { FaQuestionCircle, FaStar, FaLightbulb, FaTrophy, FaBookOpen } from "react-icons/fa";
 
 export default function Hero() {
   const router = useRouter();
 
   return (
     <section className="relative w-full h-screen flex flex-col justify-center items-center bg-white overflow-hidden">
-      {/* Animated Falling Icons */}
-      <motion.div className="absolute inset-0 flex justify-center">
-        <FallingIcons />
-      </motion.div>
+  
 
       {/* Hero Text */}
       <motion.h1
@@ -59,43 +55,4 @@ export default function Hero() {
 }
 
 // Animated Falling Icons
-function FallingIcons() {
-  const icons = [
-    <FaQuestionCircle size={30} className="text-blue-500" />,
-    <FaStar size={30} className="text-yellow-400" />,
-    <FaLightbulb size={30} className="text-blue-300" />,
-    <FaTrophy size={30} className="text-red-400" />,
-    <FaBookOpen size={30} className="text-green-400" />,
-  ];
 
-  return (
-    <div className="absolute w-full h-full pointer-events-none">
-      {Array(15)
-        .fill(0)
-        .map((_, index) => {
-          const randomX = Math.random() * 100; // Random X position
-          const randomDelay = Math.random() * 4; // Random start delay
-          const randomSize = Math.random() * 15 + 20; // Varying icon size
-          const randomDuration = Math.random() * 4 + 8; // Slower fall (8-12s)
-
-          return (
-            <motion.div
-              key={index}
-              className="absolute"
-              style={{ left: `${randomX}%`, top: "-5%" }}
-              initial={{ y: "-100vh", opacity: 1 }}
-              animate={{ y: "100vh", opacity: 0 }}
-              transition={{
-                duration: randomDuration,
-                delay: randomDelay,
-                repeat: Infinity,
-                ease: "easeOut",
-              }}
-            >
-              {icons[Math.floor(Math.random() * icons.length)]}
-            </motion.div>
-          );
-        })}
-    </div>
-  );
-}
