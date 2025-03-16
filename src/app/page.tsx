@@ -1,8 +1,13 @@
 import React from 'react'
+import Navbar from './components/Navbar'
+import Hero from './components/Hero'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <Navbar />
+      <Hero />
+    </div>
   )
 }
 
