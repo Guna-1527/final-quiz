@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
+import { motion } from "framer-motion";
 
 export default function QuizLayout({ children }: { children: React.ReactNode }) {
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
@@ -15,7 +16,6 @@ export default function QuizLayout({ children }: { children: React.ReactNode }) 
   const router = useRouter();
   const categoryIdFromUrl = params?.categoryId as string;
 
-  // Fetch categories on mount
   useEffect(() => {
     const fetchCategories = async () => {
       const { data, error } = await supabase.from("categories").select("id, name");
@@ -31,10 +31,8 @@ export default function QuizLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <div className="flex flex-col w-screen h-screen bg-gray-100">
-      {/* Navbar */}
       <header className="bg-white shadow-md h-16 px-6 flex justify-between items-center border-b">
         <div className="flex items-center gap-4">
-          {/* Hamburger Icon */}
           <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-gray-600">
             {isSidebarOpen ? <IoClose size={26} /> : <FiMenu size={26} />}
           </button>
@@ -53,11 +51,9 @@ export default function QuizLayout({ children }: { children: React.ReactNode }) 
         </div>
       </header>
 
-      {/* Main Layout */}
       <div className="flex flex-1 h-[calc(100vh-4rem)]">
-        {/* Sidebar (Fully Collapses) */}
         <aside
-          className={`bg-white shadow-lg border-r p-6 overflow-y-auto h-[calc(100vh-4rem)] fixed top-16 transition-all duration-300 ${
+          className={`bg-white shadow-lg border-r p-6 overflow-y-auto h-[calc(100vh-4rem)] fixed top-16 transition-all duration-300 no-scrollbar ${
             isSidebarOpen ? "w-72 left-0" : "w-0 -left-72"
           }`}
         >
@@ -65,52 +61,45 @@ export default function QuizLayout({ children }: { children: React.ReactNode }) 
           {error && <p className="text-red-500">{error}</p>}
           <ul className="space-y-2">
             {categories.map((category) => (
-              <li
+              <motion.li
                 key={category.id}
-                className={`p-3 rounded-lg text-gray-700 hover:bg-blue-100 transition cursor-pointer ${
+                className={`p-3 rounded-lg text-gray-700 hover:bg-blue-500 transition cursor-pointer ${
                   categoryIdFromUrl === category.id ? "bg-blue-600 text-white" : ""
                 }`}
                 onClick={() => router.push(`/quiz/${category.id}`)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {category.name}
-              </li>
+              </motion.li>
             ))}
           </ul>
         </aside>
 
-        {/* Main Content (Expands When Sidebar is Closed) */}
-        <main
-          className={`p-8 overflow-y-auto transition-all no-scrollbar duration-300 flex-1 ${
-            isSidebarOpen ? "ml-72" : "ml-0"
-          }`}
-        >
-          {children}
-        </main>
-
-        {/* Quick Links Sidebar */}
-        <aside className="w-72 bg-white shadow-lg border-l p-6 overflow-y-auto">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">🔗 Quick Links</h2>
-          <ul className="space-y-3">
-            <li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-100 transition cursor-pointer">
-              <a href="#">🏆 Leaderboard</a>
-            </li>
-            <li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-100 transition cursor-pointer">
-              <a href="#">🔥 Daily Challenges</a>
-            </li>
-            <li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-100 transition cursor-pointer">
-              <a href="#">📈 Top Quizzes</a>
-            </li>
-            <li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-100 transition cursor-pointer">
-              <a href="#">📢 Latest Updates</a>
-            </li>
-          </ul>
-
-          {/* Ad Section */}
-          <div className="mt-6 p-5 bg-gray-300 rounded-lg text-center">
-            <p className="text-sm text-gray-700">Advertisement</p>
-            <p className="text-xs text-gray-600">Your ad here</p>
-          </div>
-        </aside>
+        <div className={`flex flex-1 transition-all no-scrollbar duration-300 p-8 gap-4 lg:gap-0 ${isSidebarOpen ? "ml-72" : "ml-0"}`}>
+          <main className="flex-1 overflow-y-auto no-scrollbar">{children}</main>
+          <aside className="hidden lg:block w-72 border-l p-6 overflow-y-auto no-scrollbar bg-transparent">
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">🔗 Quick Links</h2>
+            <ul className="space-y-3">
+              <motion.li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-500 transition cursor-pointer" whileHover={{ scale: 1.1 }}>
+                <a href="#">🏆 Leaderboard</a>
+              </motion.li>
+              <motion.li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-500 transition cursor-pointer" whileHover={{ scale: 1.1 }}>
+                <a href="#">🔥 Daily Challenges</a>
+              </motion.li>
+              <motion.li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-500 transition cursor-pointer" whileHover={{ scale: 1.1 }}>
+                <a href="#">📈 Top Quizzes</a>
+              </motion.li>
+              <motion.li className="p-3 bg-gray-200 rounded-lg hover:bg-blue-500 transition cursor-pointer" whileHover={{ scale: 1.1 }}>
+                <a href="#">📢 Latest Updates</a>
+              </motion.li>
+            </ul>
+            <div className="mt-6 p-5 bg-gray-300 rounded-lg text-center">
+              <p className="text-sm text-gray-700">Advertisement</p>
+              <p className="text-xs text-gray-600">Your ad here</p>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   );
