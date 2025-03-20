@@ -16,7 +16,7 @@ export default function Login() {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -24,8 +24,12 @@ export default function Login() {
       if (error) throw error;
       alert("Login successful!");
       router.push("/dashboard"); // Redirect to Dashboard after login
-    } catch (error: any) {
-      setError(error.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -68,7 +72,7 @@ export default function Login() {
         </button>
 
         <p className="text-gray-600 text-center mt-4">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a href="/signup" className="text-blue-600 hover:underline">
             Sign Up
           </a>

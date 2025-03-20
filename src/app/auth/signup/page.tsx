@@ -16,7 +16,7 @@ const Signup = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
       });
@@ -24,8 +24,12 @@ const Signup = () => {
       if (error) throw error;
       alert("Check your email for verification!");
       router.push("/quiz");
-    } catch (error: any) {
-      setError(error.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -35,13 +39,17 @@ const Signup = () => {
   const handleGoogleSignup = async () => {
     setError(null);
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
       });
 
       if (error) throw error;
-    } catch (error: any) {
-      setError(error.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
     }
   };
 
