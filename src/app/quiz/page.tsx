@@ -6,14 +6,18 @@ import { useRouter } from "next/navigation";
 import { FaPlayCircle, FaChartBar } from "react-icons/fa";
 
 export default function QuizPage() {
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data, error } = await supabase.from("categories").select("id, name");
+      const { data, error } = await supabase
+        .from("categories")
+        .select("id, name");
       if (error) {
         console.error("Error fetching categories:", error.message);
         setError("Failed to load categories.");
@@ -28,7 +32,9 @@ export default function QuizPage() {
   return (
     <div className="p-4 w-full h-[calc(100vh-4rem)] overflow-y-auto  no-scrollbar bg-gray-100">
       <h1 className="text-2xl font-bold text-gray-800 mb-3">🎯 Take a Quiz</h1>
-      <p className="text-gray-600 mb-4">Select a category and start your quiz.</p>
+      <p className="text-gray-600 mb-4">
+        Select a category and start your quiz.
+      </p>
 
       {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
@@ -44,8 +50,10 @@ export default function QuizPage() {
               onClick={() => router.push(`/quiz/${category.id}`)}
               className="p-4 bg-white shadow-md rounded-lg cursor-pointer hover:bg-blue-100 transition"
             >
-              <h2 className="text-lg font-semibold text-gray-700">{category.name}</h2>
-              <button className="mt-2 flex items-center gap-2 text-blue-600 font-medium">
+              <h2 className="text-lg font-semibold text-gray-700">
+                {category.name}
+              </h2>
+              <button className="mt-2 flex items-center gap-2 cursor-pointer hover:bg-blue-500 text-blue-600 font-medium">
                 <FaPlayCircle /> Start Quiz
               </button>
             </div>
@@ -56,7 +64,9 @@ export default function QuizPage() {
       {/* Leaderboard Section */}
       <div className="mt-6 bg-white shadow-md p-4 rounded-lg">
         <h2 className="text-lg font-semibold mb-2">🏆 Leaderboard</h2>
-        <p className="text-gray-500">Top players and highest scores will appear here.</p>
+        <p className="text-gray-500">
+          Top players and highest scores will appear here.
+        </p>
         <button className="mt-2 flex items-center gap-2 text-blue-600 font-medium">
           <FaChartBar /> View Leaderboard
         </button>
