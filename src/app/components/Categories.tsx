@@ -42,7 +42,7 @@ const Categories = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="w-full flex flex-wrap gap-4 justify-center p-6">
+    <div id="categories" className="w-full flex flex-wrap gap-4 justify-center p-6">
       {categories.map((category) => (
         <div
           key={category.id}

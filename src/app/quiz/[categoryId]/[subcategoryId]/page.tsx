@@ -12,7 +12,13 @@ interface Question {
   incorrect_answer_1: string;
   incorrect_answer_2: string;
   incorrect_answer_3: string;
+  shuffled_answers: string[]; // ✅ Ensured this is always present
 }
+
+// Utility function to shuffle an array
+const shuffleArray = (array: string[]) => {
+  return [...array].sort(() => Math.random() - 0.5);
+};
 
 export default function QuizPage() {
   const params = useParams();
@@ -38,7 +44,18 @@ export default function QuizPage() {
           throw new Error(error.message);
         }
 
-        setQuestions(data || []);
+        // ✅ Shuffle answers only once and store in `shuffled_answers`
+        const formattedQuestions = (data || []).map((q) => ({
+          ...q,
+          shuffled_answers: shuffleArray([
+            q.correct_answer,
+            q.incorrect_answer_1,
+            q.incorrect_answer_2,
+            q.incorrect_answer_3,
+          ]),
+        }));
+
+        setQuestions(formattedQuestions);
       } catch (fetchError) {
         setError(fetchError instanceof Error ? fetchError.message : "An unknown error occurred.");
       } finally {
@@ -47,7 +64,7 @@ export default function QuizPage() {
     }
 
     fetchQuestions();
-  }, [categoryId, subcategoryId]); // ✅ Fixed missing dependency warning
+  }, [categoryId, subcategoryId]); // ✅ Dependency fix
 
   const handleAnswerSelect = (questionId: string, answer: string) => {
     setSelectedAnswers((prev) => ({
@@ -62,9 +79,7 @@ export default function QuizPage() {
       0
     );
 
-    // ✅ No need to setScore(finalScore) since it's not used
-
-    // Navigate to the result page with query params
+    // ✅ Navigate to the result page
     router.push(`/quiz/result?score=${encodeURIComponent(finalScore)}&total=${encodeURIComponent(questions.length)}`);
   };
 
@@ -94,17 +109,19 @@ export default function QuizPage() {
 
   return (
     <div>
-      <div className="p-6 max-w-3xl mx-auto">
+      <div className="p-6 w-full mx-auto">
         <h1 className="text-2xl font-bold mb-4 text-center">Quiz Questions</h1>
 
         {questions.length > 0 ? (
-          questions.map((question) => (
+          questions.map((question, index) => (
             <div key={question.id} className="mb-6 border-b pb-4">
-              <h2 className="text-lg font-semibold mb-2">{question.question_text}</h2>
-              <div className="grid grid-cols-2 gap-4">
-                {[question.correct_answer, question.incorrect_answer_1, question.incorrect_answer_2, question.incorrect_answer_3].map((answer, index) => (
+              <h2 className="text-lg font-semibold mb-2">
+                {index + 1}. {question.question_text}
+              </h2>
+              <div className="grid grid-cols-2 gap-4 cursor-pointer">
+                {question.shuffled_answers?.map((answer, i) => (
                   <button
-                    key={index}
+                    key={i}
                     className={`p-3 border rounded-md text-left ${
                       selectedAnswers[question.id] === answer ? "bg-blue-500 text-white" : "bg-gray-100"
                     }`}
