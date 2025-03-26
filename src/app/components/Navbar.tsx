@@ -30,7 +30,7 @@ const Navbar = () => {
           className="text-3xl font-extrabold text-blue-600 cursor-pointer hover:scale-105 transition"
           onClick={() => router.push("/")}
         >
-          Quizify
+          Quizzify
         </h1>
 
         {/* Desktop Menu */}
