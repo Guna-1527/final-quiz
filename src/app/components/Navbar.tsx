@@ -35,7 +35,7 @@ export default function Navbar() {
           className="text-3xl font-bold cursor-pointer"
           onClick={() => router.push("/")}
         >
-          Quizify
+          Quizzify
         </h1>
 
         {/* Desktop Menu */}
