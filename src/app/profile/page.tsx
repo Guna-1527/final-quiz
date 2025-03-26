@@ -1,9 +1,10 @@
 "use client";
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { FaEdit, FaUser, FaChartBar, FaCrown, FaPhone, FaBirthdayCake, FaLinkedin } from "react-icons/fa";
+import { FaEdit, FaUser, FaChartBar, FaCrown } from "react-icons/fa";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
@@ -22,6 +23,15 @@ export default function Profile() {
     setIsEditing(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  // Handle input change with proper typing for the event
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUser((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
   };
 
   return (
@@ -69,27 +79,37 @@ export default function Profile() {
 
         {/* Profile Info */}
         <div className="col-span-3 bg-white p-8 rounded-2xl shadow-lg relative">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-6">Profile Information</h3>
+          <h3 className="text-2xl font-semibold text-gray-800 mb-6">
+            Profile Information
+          </h3>
           <div className="grid grid-cols-2 gap-6">
-            {Object.entries(user).map(([key, value]) => (
-              key !== "avatar" && (
-                <div key={key} className="flex flex-col gap-1">
-                  <label className="text-gray-600 capitalize">{key}</label>
-                  <input
-                    type="text"
-                    value={value}
-                    disabled={!isEditing}
-                    className={`p-3 rounded-lg w-full border focus:outline-none transition-all ${
-                      isEditing ? "border-blue-500 bg-white" : "border-gray-300 bg-gray-100 text-gray-500"
-                    }`}
-                  />
-                </div>
-              )
-            ))}
+            {Object.entries(user).map(
+              ([key, value]) =>
+                key !== "avatar" && (
+                  <div key={key} className="flex flex-col gap-1">
+                    <label className="text-gray-600 capitalize">{key}</label>
+                    <input
+                      type="text"
+                      name={key} // Set the name to match the property in state
+                      value={value}
+                      onChange={handleInputChange} // Handle the change to update state
+                      disabled={!isEditing}
+                      className={`p-3 rounded-lg w-full border focus:outline-none transition-all ${
+                        isEditing
+                          ? "border-blue-500 bg-white"
+                          : "border-gray-300 bg-gray-100 text-gray-500"
+                      }`}
+                    />
+                  </div>
+                )
+            )}
           </div>
           {isEditing && (
             <div className="mt-6 text-center">
-              <Button onClick={handleSave} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all">
+              <Button
+                onClick={handleSave}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-lg transition-all"
+              >
                 Save Changes
               </Button>
             </div>
