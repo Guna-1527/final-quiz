@@ -10,7 +10,11 @@ export default function Hero() {
 
   return (
     <>
-      {/* SEO Meta Tags */}
+      {/* SEO Meta Tags
+      
+      <div class="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      
+      */}
       <Head>
         <title>Government Exam and Interview Preparation</title> {/* Title for SEO */}
         <meta name="description" content="Ace your government exams and interviews with confidence using our expert resources and engaging quizzes. Prepare and succeed!" />
@@ -25,6 +29,7 @@ export default function Hero() {
       </Head>
 
       <section className="relative w-full h-screen flex flex-col justify-center items-center overflow-hidden">
+      <div className="absolute h-full w-full -z-10 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
         {/* Hero Text */}
         <motion.h1
           initial={{ opacity: 0, y: 50 }}  // Start from below the screen
