@@ -35,7 +35,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 50 }}  // Start from below the screen
           animate={{ opacity: 1, y: 0 }}   // Animate to original position
           transition={{ duration: 1, ease: "easeOut" }}
-          className="text-6xl font-extrabold max-w-7xl text-center leading-tight"
+          className="text-3xl lg:text-7xl font-extrabold max-w-7xl relative text-center leading-tight"
         >
           <span className="relative inline-block overflow-hidden">
             <motion.span
@@ -44,7 +44,10 @@ export default function Hero() {
               transition={{ duration: 1, ease: "easeOut" }}
               className="absolute top-0 left-0 h-full bg-black"
             ></motion.span>
-            <span className="relative text-white px-2 z-10">Ace Your Exams</span>
+            <span className="relative text-white px-2 z-10">
+              
+              Ace Your Exams
+            </span>
           </span>
           <motion.span
             initial={{ opacity: 0 }}

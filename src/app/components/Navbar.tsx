@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Brain } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, X } from "lucide-react";
@@ -32,9 +33,10 @@ export default function Navbar() {
       <div className="max-w-[1300px] mx-auto flex justify-between items-center px-6 py-4">
         {/* Logo */}
         <h1
-          className="text-3xl font-bold cursor-pointer"
+          className="text-3xl font-bold cursor-pointer flex gap-1 items-center text-bold"
           onClick={() => router.push("/")}
         >
+           <Brain  className="hover:rotate-12 animate-bounce"/>
           Quizzify
         </h1>
 
@@ -52,7 +54,7 @@ export default function Navbar() {
           <Button variant="ghost" asChild>
             <Link href="#contact">Contact Us</Link>
           </Button>
-          <Button onClick={() => router.push("/auth/signup")}>Sign Up</Button>
+          <Button className="cursor-pointer" onClick={() => router.push("/auth")}>Sign Up</Button>
         </div>
 
         {/* Mobile Menu */}
@@ -83,7 +85,9 @@ export default function Navbar() {
                 <Button variant="ghost" asChild>
                   <Link href="#contact" onClick={() => setMenuOpen(false)}>Contact Us</Link>
                 </Button>
-                <Button onClick={() => { setMenuOpen(false); router.push("/auth/signup"); }}>Sign Up</Button>
+                <div className="cursor-pointer">
+                  <Button onClick={() => { setMenuOpen(false); router.push("/auth"); }}>Sign Up</Button>
+                  </div>
               </nav>
             </SheetContent>
           </Sheet>
